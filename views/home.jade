@@ -5,7 +5,7 @@ block content
 			form.uploadForm(action="/upload" enctype="multipart/form-data" method="post")
 				div.fileUpload.btn.btn-primary
 					span Upload New
-					input.upload#fileBox(type="file" name="fileToUpload")
+					input.upload#fileBox(type="file" name="fileToUpload" multiple = "multiple")
 				input(type = "submit" value = "Upload Now")
 
 		div.displayContainer(ng-controller = "ListCtrl")
@@ -15,26 +15,33 @@ block content
 		var filesToUpload = [];
 		$(".upload").on("change", function(evt) {
 			
-			var file   	  = $("#fileBox").get(0).files[0];
+			var files   	  = $("#fileBox").get(0).files;
 			
-			filesToUpload.push(file);
+			for(var i = 0; i < files.length; i++) {
+				(function(idx) {
+					var file = files[idx];
+					var imageType = /image.*/;
+					var reader 	  = new FileReader();
+					if (file.type.match(imageType)) {
+						reader.onload = function() {
+							var img = $('<img />', {
+									src : reader.result,
+										class : "imageThumb"
+									});
+								$("body").append(img);
+							}
 
-			var imageType = /image.*/;
-			var reader 	  = new FileReader();
-			if (file.type.match(imageType)) {
-				reader.onload = function() {
-					var img = $('<img />', {
-							src : reader.result,
-							class : "imageThumb"
-						});
-					$("body").append(img);
-				}
-
-				reader.readAsDataURL(file);
+						reader.readAsDataURL(file);
+						filesToUpload.push(file);
+					}
+					else {
+						console.error("File not Supported")
+					}
+				})(i);
+			
+			
 			}
-		else {
-			console.error("File not Supported")
-			}
+		
 		});
 
 		$(".uploadForm").on("submit", function(evt) {
