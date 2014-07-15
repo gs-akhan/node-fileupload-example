@@ -22,7 +22,7 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded());*/
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname,'uploaded_images')));
 
 
 /*
@@ -32,7 +32,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get("/", mainScreen);
 app.get("/api/imagelist", apis.getImages)
 app.post("/upload", apis.upload);
-app.post("/testupload", apis.testupload);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

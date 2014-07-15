@@ -5,43 +5,70 @@ block content
 			form.uploadForm(action="/upload" enctype="multipart/form-data" method="post")
 				div.fileUpload.btn.btn-primary
 					span Upload New
-					input.upload#fileBox(type="file" name="fileToUpload" multiple="multiple")
-				input(type = "text" name = "title")
+					input.upload#fileBox(type="file" name="fileToUpload")
 				input(type = "submit" value = "Upload Now")
 
 		div.displayContainer(ng-controller = "ListCtrl")
 	script.
 		
+		/*Onchange Event on File*/
+		var filesToUpload = [];
+		$(".upload").on("change", function(evt) {
+			
+			var file   	  = $("#fileBox").get(0).files[0];
+			
+			filesToUpload.push(file);
+
+			var imageType = /image.*/;
+			var reader 	  = new FileReader();
+			if (file.type.match(imageType)) {
+				reader.onload = function() {
+					var img = $('<img />', {
+							src : reader.result,
+							class : "imageThumb"
+						});
+					$("body").append(img);
+				}
+
+				reader.readAsDataURL(file);
+			}
+		else {
+			console.error("File not Supported")
+			}
+		});
+
 		$(".uploadForm").on("submit", function(evt) {
-			var fileSelect = $("#fileBox").get(0);
-			var files 	   = fileSelect.files;
-			var formData   = new FormData();
-			for(var i = 0; i < files.length; i++) {
-				formData.append('fileToUpload',files[i]);
-			}
-
-			try {
-
-				$.ajax({
-					cache: false,
-					contentType: false,
-					processData: false,
-					type: "POST",
-					url: "/testupload",
-					data: formData
-					
-				}).success(function() {
-					alert('done');
-				}).fail(function() {
-					alert('failed');
-				});
-			}
-			catch(e) {
+		
+		try {
+				
+				
+				for(var i = 0; i < filesToUpload.length; i++) {
+					(function(idx) {
+						var formData = new FormData();
+							formData.append("fileToUpload", filesToUpload[idx]);
+							$.ajax({
+									cache: false,
+									contentType: false,
+									processData: false,
+									type: "POST",
+									url: "/upload",
+									data: formData
+									
+							}).success(function() {
+									$("body").append('<a target = "_blank" href = "/'+filesToUpload[idx].name+'" >Uploaded At</a><br>');
+							}).fail(function() {
+									alert('failed');
+							});
+						})(i);
+				}
+				evt.preventDefault();
+		}	
+		catch(e) {
 				console.error(e.message);
 				evt.preventDefault();
-			}
+		}
 
-			evt.preventDefault();
+			
 		});
 		
 	

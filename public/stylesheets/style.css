@@ -17,3 +17,8 @@
 	opacity: 0;
 	filter: alpha(opacity=0);
 }
+
+.imageThumb {
+	width : 100px;
+	height : 100px;
+}
