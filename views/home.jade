@@ -1,0 +1,47 @@
+extends layout
+block content
+	div.container-fluid
+		div.row
+			form.uploadForm(action="/upload" enctype="multipart/form-data" method="post")
+				div.fileUpload.btn.btn-primary
+					span Upload New
+					input.upload#fileBox(type="file" name="fileToUpload" multiple="multiple")
+				input(type = "text" name = "title")
+				input(type = "submit" value = "Upload Now")
+
+		div.displayContainer(ng-controller = "ListCtrl")
+	script.
+		
+		$(".uploadForm").on("submit", function(evt) {
+			var fileSelect = $("#fileBox").get(0);
+			var files 	   = fileSelect.files;
+			var formData   = new FormData();
+			for(var i = 0; i < files.length; i++) {
+				formData.append('fileToUpload',files[i]);
+			}
+
+			try {
+
+				$.ajax({
+					cache: false,
+					contentType: false,
+					processData: false,
+					type: "POST",
+					url: "/testupload",
+					data: formData
+					
+				}).success(function() {
+					alert('done');
+				}).fail(function() {
+					alert('failed');
+				});
+			}
+			catch(e) {
+				console.error(e.message);
+				evt.preventDefault();
+			}
+
+			evt.preventDefault();
+		});
+		
+	
