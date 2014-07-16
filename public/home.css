@@ -16,9 +16,22 @@
   font-size: 20px;
   cursor: pointer;
   opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
   filter: alpha(opacity=0);
 }
 .imageThumb {
   width: 100px;
   height: 100px;
+}
+.something {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.nooo {
+  background: -webkit-linear-gradient(top, #fff, #000);
+  background: -moz-linear-gradient(top, #fff, #000);
+  background: -o-linear-gradient(top, #fff, #000);
+  background: -ms-linear-gradient(top, #fff, #000);
+  background: linear-gradient(to bottom, #fff, #000);
 }
