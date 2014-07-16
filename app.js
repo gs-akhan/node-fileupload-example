@@ -3,26 +3,45 @@ var path            = require('path');
 var favicon         = require('static-favicon');
 var logger          = require('morgan');
 var cookieParser    = require('cookie-parser');
-var bodyParser      = require('body-parser');      
+var bodyParser      = require('body-parser');  
+var stylus          = require('stylus');    
 
 var routes          = require('./routes/index');
 var users           = require('./routes/users');
 var mainScreen      = require('./routes/home');
 var apis            = require('./bin/apis');
+var nim             = require('nib');
+function compile(str, path) {
+  return stylus(str)
+    .set('filename', path)
+    .use(nib())
+}
+
 var app = express();
     app.listen(4000);
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+console.log(__dirname + '/public/stylus/');
+app.use(stylus.middleware(
+  {     
+    src  : __dirname + '/public/stylus/', 
+    dest : __dirname + '/public/',
+    debug: true,
+    force: true
+  }
+));
 
 app.use(favicon());
 app.use(logger('dev'));
 /*app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());*/
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname,'uploaded_images')));
+
+//Middlware to compile stylus
 
 
 /*

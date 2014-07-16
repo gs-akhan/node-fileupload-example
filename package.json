@@ -13,6 +13,8 @@
     "formidable": "^1.0.15",
     "jade": "~1.3.0",
     "morgan": "~1.0.0",
-    "static-favicon": "~1.0.0"
+    "nib": "^1.0.3",
+    "static-favicon": "~1.0.0",
+    "stylus": "^0.47.1"
   }
 }
