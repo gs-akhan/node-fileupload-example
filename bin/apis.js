@@ -6,7 +6,19 @@ var config 	   = require('../config');
 
 module.exports.getImages = function(req, res) {
 	//Query all the images and send them back as a Collection
-	res.json([{"name" : "I like this"}]);
+	
+	fs.readdir(path.join(config.rootPath,"uploaded_images"), function(err, files) {
+		files.forEach(function(f) {
+			var stat = fs.stat(path.join(config.rootPath,"uploaded_images", f));
+			console.log(stat);
+		});
+		if(err) {
+			console.log(err);
+			res.end(err);
+		}
+		res.json(files);
+	});
+
 }
 
 
@@ -23,8 +35,7 @@ module.exports.upload = function(req, res) {
 			fs.readFile(files.fileToUpload.path, function(err, data){
 
 		  	// Save file.
-		  	console.log(config.rootPath);
-		  		fs.writeFile(path.join(config.rootPath, 'uploaded_images',files.fileToUpload.name),
+		  		fs.writeFile(path.join(config.rootPath, 'uploaded_images',files.fileToUpload.name.replace(/\s+/g, "")),
 					data, 
 					'utf8', 
 					function (err) {
@@ -32,7 +43,7 @@ module.exports.upload = function(req, res) {
 							// throw err;
 							res.writeHead(200, {'content-type': 'text/plain'});
 							res.write(JSON.stringify({
-								isSucessful: false,
+								result: false,
 								message: 'Something went wrong!'					
 							}));
 							res.end();
@@ -40,7 +51,7 @@ module.exports.upload = function(req, res) {
 							// Sucess.
 							res.writeHead(200, {'content-type': 'text/plain'});
 							res.write(JSON.stringify({
-								isSucessful: true,
+								result: true,
 								message: 'File was saved!'
 							}));
 							res.end();
@@ -58,3 +69,27 @@ module.exports.upload = function(req, res) {
   });
 		
 }
+/**
+* API to delete the file
+* @Param : File
+**/
+
+module.exports.delete = function(fileName){
+
+	fs.unlink(path.join(path.rootPath,"uploaded_images", fileName), function(err) {
+		if(err) {
+			res.json({
+				result : false,
+				err : err
+			})
+		}
+		else {
+			res.json({
+				result : true,
+				err : null
+			});
+		}
+
+	})
+}
+

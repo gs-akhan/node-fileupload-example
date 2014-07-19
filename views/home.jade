@@ -9,6 +9,9 @@ block content
 				input(type = "submit" value = "Upload Now")
 
 		div.displayContainer(ng-controller = "ListCtrl")
+			div(ng-repeat = "item in imagelist")
+				img.imageThumb(ng-src="/{{item}}")
+			
 	script.
 		
 		/*Onchange Event on File*/
@@ -62,7 +65,7 @@ block content
 									data: formData
 									
 							}).success(function() {
-									$("body").append('<a target = "_blank" href = "/'+filesToUpload[idx].name+'" >Uploaded At</a><br>');
+									$("body").append('<a target = "_blank" href = "/'+filesToUpload[idx].name.replace(/\s+/g, "")+'" >Uploaded At</a><br>');
 							}).fail(function() {
 									alert('failed');
 							});
