@@ -15,6 +15,12 @@
     "morgan": "~1.0.0",
     "nib": "^1.0.3",
     "static-favicon": "~1.0.0",
-    "stylus": "^0.47.1"
+    "stylus": "^0.47.1",
+    "grunt": "0.4.1",
+    "grunt-cli": "0.1.9",
+    "grunt-contrib-jshint": "*"
+  },
+  "scripts": {
+    "test": "grunt --verbose"
   }
 }
