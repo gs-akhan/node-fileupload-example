@@ -2,7 +2,7 @@ module.exports = function(grunt) {
  
   grunt.initConfig({
     jshint: {
-      all: ['./routes/*.js', './bin/*.js'],
+      all: ['./routes/*.js', './bin/*.js','app.js'],
       options : {
       	curly: true,
 	    eqeqeq: true,

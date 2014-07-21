@@ -52,7 +52,7 @@ app.use(express.static(path.join(__dirname,'uploaded_images')));
 */
 
 app.get("/", mainScreen);
-app.get("/api/imagelist", apis.getImages)
+app.get("/api/imagelist", apis.getImages);
 app.post("/upload", apis.upload);
 
 /// catch 404 and forward to error handler
