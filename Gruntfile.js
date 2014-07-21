@@ -6,7 +6,8 @@ module.exports = function(grunt) {
       options : {
       	curly: true,
 	    eqeqeq: true,
-	    eqnull: true
+	    eqnull: true,
+	    latedef: true
       }
     }
   });

@@ -16,6 +16,7 @@ module.exports.getImages = function(req, res) {
 			console.log(err);
 			res.end(err);
 		}
+		
 		res.json(files);
 	});
 
@@ -73,7 +74,6 @@ module.exports.upload = function(req, res) {
 * API to delete the file
 * @Param : File
 **/
-
 module.exports.delete = function(fileName){
 
 	fs.unlink(path.join(path.rootPath,"uploaded_images", fileName), function(err) {
