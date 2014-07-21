@@ -19,7 +19,7 @@ module.exports.getImages = function(req, res) {
 		res.json(files);
 	});
 
-}
+};
 
 
 module.exports.upload = function(req, res) {
@@ -68,7 +68,7 @@ module.exports.upload = function(req, res) {
 		}
   });
 		
-}
+};
 /**
 * API to delete the file
 * @Param : File
@@ -81,7 +81,7 @@ module.exports.delete = function(fileName){
 			res.json({
 				result : false,
 				err : err
-			})
+			});
 		}
 		else {
 			res.json({
@@ -90,6 +90,6 @@ module.exports.delete = function(fileName){
 			});
 		}
 
-	})
-}
+	});
+};
 

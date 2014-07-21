@@ -2,7 +2,7 @@ module.exports = function(grunt) {
  
   grunt.initConfig({
     jshint: {
-      all: ['./routes/*.js']
+      all: ['./routes/*.js', './bin/*.js']
     }
   });
  
