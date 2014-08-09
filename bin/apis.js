@@ -37,7 +37,7 @@ module.exports.upload = function(req, res) {
 
 		  	// Save file.
 		  		fs.writeFile(path.join(config.rootPath, 'uploaded_images',files.fileToUpload.name.replace(/\s+/g, "")),
-					data, 
+					data,
 					'utf8', 
 					function (err) {
 						if (err){
@@ -92,4 +92,3 @@ module.exports.delete = function(fileName){
 
 	});
 };
-

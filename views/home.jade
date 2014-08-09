@@ -9,8 +9,8 @@ block content
 				input(type = "submit" value = "Upload Now")
 
 		div.displayContainer(ng-controller = "ListCtrl")
-			div(ng-repeat = "item in imagelist")
-				img.imageThumb(ng-src="/{{item}}")
+			div.uploadedGallery
+				img.imageThumb(ng-repeat = "item in imagelist" ng-src="/{{item}}")
 			
 	script.
 		
