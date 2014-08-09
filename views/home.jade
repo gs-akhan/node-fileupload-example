@@ -14,7 +14,7 @@ block content
 
 		div.displayContainer(ng-controller = "ListCtrl")
 			div.uploadedGallery
-				img.imageThumb(ng-repeat = "item in imagelist" ng-src="/{{item}}")
+				img.imageThumb(ng-repeat = "item in photos() track by $index" ng-src="/{{item}}")
 			
 	script.
 	

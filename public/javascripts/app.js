@@ -2,22 +2,51 @@
 	"use strict";
 	var photoApp = window.angular.module("photoApp", []);
 
-	photoApp.controller("ListCtrl", function ($scope, $http) {
+	/**
+	* Create a servie to hold all the images.
+	**/
+		
+	photoApp.factory('AllImages', function() {
+		var photosList = [];
+		return {
+			addphoto : function(imgName) {
+				photosList.push(imgName)
+			},
+
+			photos : function() {
+				return photosList;
+			}
+		}
+	});
+
+	photoApp.controller("ListCtrl", function ($scope, $http, AllImages) {
+		/*$scope.$watch(function() {
+		    return AllImages.photos;
+		}, function(newVal, oldVal) {
+		    alert('changes')
+		});*/
+
 		$http({method : "GET", url : "/api/imagelist"})
 			 .success(function(data) {
-			 	console.log(data);
-			 	$scope.imagelist = data;
+			 	for(var k =0; k < data.length; k++) {
+			 		AllImages.addphoto(data[k]);
+			 	}
+
+			 	$scope.photos = AllImages.photos;
 			 });
 	});
 
-	photoApp.controller("UploadCtrl", function($scope, $http, $element) {
+	photoApp.controller("UploadCtrl", function($scope, $http, $element, AllImages) {
 
 		$scope.filesToUpload = [];
 
-		$scope.uploadFile = function() {
-			alert('uplaod clicked');
-		}
-
+		/**
+		* This methos fires when files are selected via File explore,
+		* It lists all the files, the user wants to upload, It then stores these files into
+		* $scope.fileToUpload[] array
+		* and when the user clicks "upload" the files from $scope.filesToUpload are parceled to the server
+		**/
+		
 		$scope.fileLoaded = function() {
 
 			var files   	  = $element.find("#fileBox").get(0).files;
@@ -45,16 +74,25 @@
 			
 			
 			}
-		}
+		};
 
-
+		
+		/**
+		* This method is used to dispatch all the selected files to the server.
+		* It loops through the files in $Scope.filesToUpload and then dispatches each files to\
+		* the /upload route.
+		**/
+		
 		$scope.uploadFiles = function() {
+			var totalFiles = $scope.filesToUpload.length,
+				uploaded   = 0; 
 
 			try {
 					
 					
 					for(var i = 0; i < $scope.filesToUpload.length; i++) {
 						(function(idx) {
+
 							var formData = new FormData();
 								formData.append("fileToUpload", $scope.filesToUpload[idx]);
 								$.ajax({
@@ -66,7 +104,16 @@
 										data: formData
 										
 								}).success(function(data) {
-										console.log(data);
+										//The below line removes the file from $scope.filesToUpload
+										//If u dont do this, next time u upload another files, this file gets uploaded again	
+										uploaded ++;
+										if(uploaded === totalFiles) {
+											$scope.filesToUpload = [];
+										}
+										data = JSON.parse(data);
+										AllImages.addphoto(data.data.location);
+										$scope.$apply();
+										
 								}).fail(function() {
 										alert('failed');
 								});
