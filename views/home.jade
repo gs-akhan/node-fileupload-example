@@ -1,84 +1,26 @@
 extends layout
 block content
 	div.container-fluid
-		div.row
-			form.uploadForm(action="/upload" enctype="multipart/form-data" method="post")
+		div.row(ng-controller = "UploadCtrl")
+			div.uploadForm(action="/upload" enctype="multipart/form-data" method="post")
 				div.fileUpload.btn.btn-primary
 					span Upload New
-					input.upload#fileBox(type="file" name="fileToUpload" multiple = "multiple")
-				input(type = "submit" value = "Upload Now")
+					input.upload#fileBox(type="file" name="fileToUpload" multiple = "multiple" ng-model = "files"
+						onchange  = "angular.element(this).scope().fileLoaded()" 
+						)
+				input(type = "submit" value = "Upload Now" ng-click = "uploadFiles()")
+				div.tempHolder
+
 
 		div.displayContainer(ng-controller = "ListCtrl")
 			div.uploadedGallery
 				img.imageThumb(ng-repeat = "item in imagelist" ng-src="/{{item}}")
 			
 	script.
-		
-		/*Onchange Event on File*/
-		var filesToUpload = [];
-		$(".upload").on("change", function(evt) {
-			
-			var files   	  = $("#fileBox").get(0).files;
-			
-			for(var i = 0; i < files.length; i++) {
-				(function(idx) {
-					var file = files[idx];
-					var imageType = /image.*/;
-					var reader 	  = new FileReader();
-					if (file.type.match(imageType)) {
-						reader.onload = function() {
-							var img = $('<img />', {
-									src : reader.result,
-										class : "imageThumb"
-									});
-								$("body").append(img);
-							}
-
-						reader.readAsDataURL(file);
-						filesToUpload.push(file);
-					}
-					else {
-						console.error("File not Supported")
-					}
-				})(i);
-			
-			
-			}
-		
-		});
-
-		$(".uploadForm").on("submit", function(evt) {
-		
-		try {
-				
-				
-				for(var i = 0; i < filesToUpload.length; i++) {
-					(function(idx) {
-						var formData = new FormData();
-							formData.append("fileToUpload", filesToUpload[idx]);
-							$.ajax({
-									cache: false,
-									contentType: false,
-									processData: false,
-									type: "POST",
-									url: "/upload",
-									data: formData
-									
-							}).success(function() {
-									$("body").append('<a target = "_blank" href = "/'+filesToUpload[idx].name.replace(/\s+/g, "")+'" >Uploaded At</a><br>');
-							}).fail(function() {
-									alert('failed');
-							});
-						})(i);
-				}
-				evt.preventDefault();
-		}	
-		catch(e) {
-				console.error(e.message);
-				evt.preventDefault();
-		}
-
-			
-		});
+	
 		
 	
+
+
+			
+		

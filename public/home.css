@@ -34,6 +34,8 @@
   border-radius: 5px;
 }
 .uploadedGallery {
-  margin-top: 100px;
   border-top: 1px solid #ddd;
+}
+.tempHolder {
+  padding: 10px 20px;
 }

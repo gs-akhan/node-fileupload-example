@@ -53,7 +53,10 @@ module.exports.upload = function(req, res) {
 							res.writeHead(200, {'content-type': 'text/plain'});
 							res.write(JSON.stringify({
 								result: true,
-								message: 'File was saved!'
+								message: 'File was saved!',
+								data : {
+									location : files.fileToUpload.name.replace(/\s+/g, "")
+								}
 							}));
 							res.end();
 						}
