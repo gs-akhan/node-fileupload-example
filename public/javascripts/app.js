@@ -34,6 +34,15 @@
 
 			 	$scope.photos = AllImages.photos;
 			 });
+		/**
+		* Invoked when user clicks the image. 
+		**/
+		$scope.navigate = function($event) {
+			var src = $($event.target).attr('src');
+			var win = window.open(src, '_blank');
+				 win.focus();
+		};
+		
 	});
 
 	photoApp.controller("UploadCtrl", function($scope, $http, $element, AllImages) {
@@ -125,7 +134,7 @@
 					console.error(e.message);
 					
 			}
-		}
+		};
 
-	})
+	});
 })();
